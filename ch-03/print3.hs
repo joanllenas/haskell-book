@@ -3,7 +3,7 @@ module Print3 where
 myGreeting :: String
 myGreeting = "hello" ++ " world!"
 
-hello :: [Char]
+hello :: String
 hello = "hello"
 
 world :: String
