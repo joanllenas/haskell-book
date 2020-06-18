@@ -291,5 +291,6 @@ fn x = "Hello World!" !! x
 ### 5.
 
 ```hs
-rvrs ....
+rvrs :: String -> String
+rvrs xs = reverse xs
 ```
