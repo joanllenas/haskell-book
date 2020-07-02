@@ -125,6 +125,8 @@ instance Eq a => Eq (Identity a) where
 ```
 
 
+### Type defaulting in Type classes
+
 > Found in the [Haskell Report](https://www.haskell.org/onlinereport/haskell2010/)
 
 ```hs
