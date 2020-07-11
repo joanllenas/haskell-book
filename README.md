@@ -151,10 +151,12 @@ Changes to:
 if you don’t specify the concrete type.
 
 
+
+
 # Vocabulary
 
 - **Constrained Polymorphism**: `(/) :: Fractional a => a -> a -> a`. Here `Fractional a => a` constrains the type variable `a` to the type `Fractional`, so it is mandatory that `a` is a `Fractional`.
 
 - **Parametric Polymorphism**: `id a = a`. Here `a` can be any type, its type has no constrains.
 
-- **conjunction**: A conjunction is a compound statement formed by joining two statements with the connector "and." The conjunction "p and q" is symbolized by p q. A conjunction is true when both of its combined parts are true; otherwise it is false.
+- **catamorphism**: a.k.a Folds. You’re familiar with the root “morphism” from polymorphism. “Cata-” means “down” or “against,” as in “catacombs.” Catamorphisms are a means of deconstructing data. If the spine of a list is the structure of a list, then a fold is what can reduce that structure.
