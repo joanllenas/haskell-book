@@ -150,8 +150,31 @@ Changes to:
 ```
 if you don’t specify the concrete type.
 
+## Forms (NF, WHNF)
+
+- **NF**: An expression is in **Normal Form** when It is fully evaluated.
+- **WHNF**: An expression is in **Weak Head Normal Form** when:
+  - It has been evaluated to the point of arriving at a data constructor.
+  - It has been evaluated to the point of arriving at a lambda awaiting an argument.
+  - If no further inputs are possible, then it is still in **WHNF** but also in **NF**.
 
 
+## newtype vs type vs data
+
+- **`newtype` vs `type`**: 
+  - A `newtype` is similar to a `type` synonym in that the representations of the named type and the type it contains are identical and any distinction between them is stripped away at compile time. So, a `String` really is a `[Char]`, and `Goats` in `newtype Goats = Goats Int deriving (Eq, Show)`  is really an `Int`.
+  - You can define type class instances for a `newtype` that differs from the instances for its underlying type. You can’t do that for `type` synonyms. (pg.406)
+
+## Smart constructor
+
+```hs
+type Name = String
+type Age = Integer
+data Person = Person Name Age deriving Show
+mkPerson :: Name -> Age -> Maybe Person mkPerson name age -- Smart constructor
+  | name /= "" && age >= 0 = Just $ Person name age
+  | otherwise = Nothing
+```
 
 # Vocabulary
 
@@ -160,3 +183,17 @@ if you don’t specify the concrete type.
 - **Parametric Polymorphism**: `id a = a`. Here `a` can be any type, its type has no constrains.
 
 - **catamorphism**: a.k.a Folds. You’re familiar with the root “morphism” from polymorphism. “Cata-” means “down” or “against,” as in “catacombs.” Catamorphisms are a means of deconstructing data. If the spine of a list is the structure of a list, then a fold is what can reduce that structure.
+
+- **arity**: The number of arguments that a constructor (or function) takes.
+  - **nullary**: zero arguments. i.e. `True`, `Nothing`.
+  - **unary**: one argument. i.e. `Just a`
+  - **products**: two or more arguments. i.e. `Time Int Int Int`
+
+- **cardinality**: The number of different combinations of a type. i.e. `Bool` = 2 (`True` and `False`), `Int8` = minBound::Int8 + maxBound::Int8 + 1 = 128 + 127 + 1 = 256.
+
+# Algebraic properties
+
+All the existing algebraic rules for products and sums apply in type system:
+
+- **distributive**: The distributive property can be generalized as follows: `a * (b + c) -> (a * b) + (a * c)`, and this is true of Haskell’s types as well! Product types distribute over sum types.
+
