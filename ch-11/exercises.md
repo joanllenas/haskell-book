@@ -179,7 +179,7 @@ isPlane p = case p of
 
 
 
-## Exercises: Cardinality
+## Exercises: Cardinality (pg.402)
 
 ### 1. 
 ```hs
@@ -319,12 +319,11 @@ newtype N2T a = N2T (a, a)
 instance (Num a, TooMany a) => TooMany (N2T a) where
   tooMany (N2T (x, y)) = tooMany x && tooMany y
 
--- Not sure how to create an example of this...
 ```
 
 
 
-## Exercises: Pity the Bool
+## Exercises: Pity the Bool (pg.410)
 
 ### 1. 
 Given a datatype:
@@ -357,7 +356,7 @@ What is the cardinality of `NumberOrBool`? What happens if you try to create a `
 
 ---
 
-- Cardinality: 128 + 127 + 1 = `256`
+- Cardinality: 128 + 127 + 1 + 2 = `258`
 - Larger than 127 or lower than -128 will throw an _out of bounds_ error.
 
 
@@ -537,7 +536,7 @@ postorder (Node left x right)
 
 ```hs
 foldTree :: (a -> b -> b) -> b -> BinaryTree a -> b
-foldTree f b Leaf = b
+foldTree _ b Leaf = b
 foldTree f b (Node left a right) = 
   foldTree f (foldTree f (f a b) left) right
 ```

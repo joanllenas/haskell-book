@@ -10,7 +10,7 @@ insert' x Leaf = Node Leaf x Leaf
 insert' x (Node left y right)
   | x == y = Node left y right
   | x < y = Node(insert' x left) y right 
-  | x > y = Node left y (insert' x right)
+  | otherwise = Node left y (insert' x right)
 
 --- Write map for BinaryTree
 

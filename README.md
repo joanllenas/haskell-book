@@ -184,6 +184,8 @@ mkPerson :: Name -> Age -> Maybe Person mkPerson name age -- Smart constructor
 
 - **catamorphism**: a.k.a Folds. You’re familiar with the root “morphism” from polymorphism. “Cata-” means “down” or “against,” as in “catacombs.” Catamorphisms are a means of deconstructing data. If the spine of a list is the structure of a list, then a fold is what can reduce that structure.
 
+- **anamorphism**: a.k.a Unfolds. If _folds_, or _catamorphisms_, let us break data structures down, then unfolds let us build them up.
+
 - **arity**: The number of arguments that a constructor (or function) takes.
   - **nullary**: zero arguments. i.e. `True`, `Nothing`.
   - **unary**: one argument. i.e. `Just a`
