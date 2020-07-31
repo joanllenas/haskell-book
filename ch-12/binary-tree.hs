@@ -25,21 +25,11 @@ myUnfoldTree testFn 0
 
 --
 
-treeBuildFn :: Integer -> Maybe (Integer,Integer,Integer)
-treeBuildFn a = 
-  if a == 0 then Nothing
-  else Just (a-1, a-1, a-1)
-
 treeBuild :: Integer -> BinaryTree Integer
-treeBuild = myUnfoldTree treeBuildFn
-
-{-
-treeBuild 3
-Node (Node (Node Leaf 0 Leaf) 
-           1 
-           (Node Leaf 0 Leaf)) 
-     2 
-     (Node (Node Leaf 0 Leaf) 
-           1 
-           (Node Leaf 0 Leaf))
--}
+treeBuild n
+  | n < 0     = Leaf
+  | otherwise = myUnfoldTree f 0
+    where
+      f k
+        | k == n    = Nothing
+        | otherwise = Just (k+1, k, k+1)

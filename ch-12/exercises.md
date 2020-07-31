@@ -23,7 +23,7 @@ What are the kinds of `a` and `f`?
 
 ---
 
-???
+`* -> *`
 
 ## String processing (pg.473)
 
@@ -72,8 +72,7 @@ the2a (Just s) = s
 replaceThe :: String -> String 
 replaceThe s 
   = List.intercalate " " 
-  . map the2a
-  . map notThe
+  . map (the2a . notThe)
   $ words s
 ```
 
@@ -95,7 +94,7 @@ Prelude> countTheBeforeVowel "the evil cow"
 ---
 
 ```hs
-WIP in string-processing.hs
+string-processing.hs
 ```
 
 
@@ -310,6 +309,13 @@ catMaybes xs
   $ filter (\x -> isJust x) xs
 ```
 
+```hs
+catMaybes :: [Maybe a] -> [a]
+catMaybes []           = []
+catMaybes (Nothing:xs) = catMaybes xs
+catMaybes (Just x:xs)  = x : catMaybes xs
+```
+
 ### 6. 
 You’ll see this called sequence later:
 
@@ -474,6 +480,10 @@ myIterate f x = x : myIterate f (f x)
 
 ---
 
+```hs
+myIterate :: (a -> a) -> a -> [a] 
+myIterate f x = x : myIterate f (f x)
+```
 
 ### 2. 
 Write the function `myUnfoldr` using direct recursion. Compare with the built-in `unfoldr` to check your implementation. Again, don’t look at implementations of unfoldr, so that you figure it out yourself:
