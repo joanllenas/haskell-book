@@ -440,6 +440,6 @@ foolGen = elements [Fulse, Frue]
 foolGen' :: Gen Fool
 foolGen' 
   = frequency 
-  [ (7, return Fulse) -- round (2/3 * 10) = 7
-  , (4, return Frue)] -- round (1/3 * 10) = 3
+  [ (3, return Fulse)
+  , (1, return Frue)]
 ```
