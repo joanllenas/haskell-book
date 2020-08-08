@@ -176,6 +176,37 @@ mkPerson :: Name -> Age -> Maybe Person mkPerson name age -- Smart constructor
   | otherwise = Nothing
 ```
 
+# Commands
+
+## Create project 
+```
+λ> stack new my-project
+```
+
+## Initialize project 
+```
+λ> stack init
+```
+> Generates the `stack.yaml` file.
+
+## Build project 
+```
+λ> stack build
+```
+
+## Test project 
+> For a cabal file with `name: morse` and a `test-suite tests` section:
+```
+λ> stack ghci morse:tests
+λ> main
+My Test Description
+  should blah blah blah...
+    +++ OK, passed 100 tests.
+
+Finished in 0.0018 seconds
+1 example, 0 failures
+```
+
 # Vocabulary
 
 - **Constrained Polymorphism**: `(/) :: Fractional a => a -> a -> a`. Here `Fractional a => a` constrains the type variable `a` to the type `Fractional`, so it is mandatory that `a` is a `Fractional`.
@@ -192,6 +223,8 @@ mkPerson :: Name -> Age -> Maybe Person mkPerson name age -- Smart constructor
   - **products**: two or more arguments. i.e. `Time Int Int Int`
 
 - **cardinality**: The number of different combinations of a type. i.e. `Bool` = 2 (`True` and `False`), `Int8` = minBound::Int8 + maxBound::Int8 + 1 = 128 + 127 + 1 = 256.
+
+- **idempotence**: If you apply the function once, it returns a result, and applying the same function to that value won’t ever change it. You might think of a list that you sort: once you sort it, the sorted list will remain the same after applying the same sorting function to it again.
 
 # Algebraic properties
 

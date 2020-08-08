@@ -1,0 +1,66 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 7e8f5958180870f700c0f9b043ba426d8c0e5488ce667a1452b301a19f6a815d
+
+name:           morse
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/morse-code#readme>
+homepage:       https://github.com/githubuser/morse-code#readme
+bug-reports:    https://github.com/githubuser/morse-code/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2020 Author name here
+license:        BSD3
+license-file:   LICENSE
+category:       Text
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/morse-code
+
+library
+  exposed-modules:
+      Morse
+  ghc-options:
+    -Wall -fwarn-tabs
+  build-depends:
+      base >=4.7 && <5
+      , containers
+      , QuickCheck
+  hs-source-dirs:
+      src
+  default-language: Haskell2010
+
+executable morse
+  main-is: Main.hs
+  ghc-options:
+    -Wall -fwarn-tabs
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+      , containers
+      , morse
+      , QuickCheck
+  default-language: Haskell2010
+
+test-suite tests
+  ghc-options: -Wall -fno-warn-orphans
+  type: exitcode-stdio-1.0
+  main-is: tests.hs
+  hs-source-dirs:
+      test
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , morse
+    , QuickCheck
+  default-language: Haskell2010
