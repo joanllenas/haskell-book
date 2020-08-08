@@ -207,7 +207,7 @@ Finished in 0.0018 seconds
 1 example, 0 failures
 ```
 
-# Vocabulary
+# Vocabulary and definitions
 
 - **Constrained Polymorphism**: `(/) :: Fractional a => a -> a -> a`. Here `Fractional a => a` constrains the type variable `a` to the type `Fractional`, so it is mandatory that `a` is a `Fractional`.
 
@@ -226,9 +226,14 @@ Finished in 0.0018 seconds
 
 - **idempotence**: If you apply the function once, it returns a result, and applying the same function to that value won’t ever change it. You might think of a list that you sort: once you sort it, the sorted list will remain the same after applying the same sorting function to it again.
 
-# Algebraic properties
+- **distributive**: The distributive property can be generalized as follows: `a * (b + c) == (a * b) + (a * c)`, and this is true of Haskell’s types as well! Product types distribute over sum types.
 
-All the existing algebraic rules for products and sums apply in type system:
+- **associative**: The associative property can be generalized as follows: `x + (y + z) == (x + y) + z`. Basically, parenthesization doesn't affect the result.
 
-- **distributive**: The distributive property can be generalized as follows: `a * (b + c) -> (a * b) + (a * c)`, and this is true of Haskell’s types as well! Product types distribute over sum types.
+- **commutative**: The commutative property can be generalized as follows: `x + y == y + x`. Basically, order doesn't affect the result.
 
+- **Monoid**: A monoid is a binary associative operation with an identity. 
+  
+  In plain English, a **Monoid** is a function that takes two argu- ments and follows two laws: **associativity** and **identity**. 
+  
+  (**Identity** means there exists some value such that when we pass it as an input to our function, the operation is rendered moot and the other value is returned, such as when we add zero or multiply by one: `0` for `(+)`, `1` for `(*)`, `[]` for `List`, and so on.)
