@@ -232,8 +232,16 @@ Finished in 0.0018 seconds
 
 - **commutative**: The commutative property can be generalized as follows: `x + y == y + x`. Basically, order doesn't affect the result.
 
-- **Monoid**: A monoid is a binary associative operation with an identity. 
+- **Algebra**: An algebra is one or more operations and the set they operate over: Semigroup, Monoid, Functor, Monad...
+
+- **Laws** are rules about how an algebra or structure should behave. These are needed in part to make abstraction over the commonalities of different instantiations of the same sort of algebra possible and practical.
+
+- **Semigroup**: A semigroup is a binary associative operation.
   
-  In plain English, a **Monoid** is a function that takes two argu- ments and follows two laws: **associativity** and **identity**. 
+  In plain English, a **Semigroup** is a function that takes two arguments and follows one law: **associativity**. 
+
+- **Monoid**: A monoid is a **Semigroup** with an identity.
   
-  (**Identity** means there exists some value such that when we pass it as an input to our function, the operation is rendered moot and the other value is returned, such as when we add zero or multiply by one: `0` for `(+)`, `1` for `(*)`, `[]` for `List`, and so on.)
+  In plain English, a **Monoid** is a function that takes two argu ments and follows two laws: **associativity** and **identity**. 
+  
+  **Identity** means there exists some value such that when we pass it as an input to our function, the operation is rendered moot and the other value is returned, such as when we add zero or multiply by one.
