@@ -465,6 +465,14 @@ instance Semigroup b => Semigroup (Combine a b) where
   Combine a2b <> Combine a2b' = Combine $ a2b <> a2b'
 
 -- Unable to do the quickCheck part
+
+-- Andrew's tests
+    it "9.e" $ property $ \(Fn f) (Fn g) x ->
+      let cf  = Combine (f :: Integer -> String)
+          cg  = Combine (g :: Integer -> String)
+          exp = f x <> g x
+          act = unCombine (cf <> cg) x
+      in  act `shouldBe` exp
 ```
 
 ### 10.
@@ -480,15 +488,8 @@ newtype Comp a
 newtype Comp a 
   = Comp { unComp :: (a -> a) }
 
-instance Semigroup a => Semigroup (Comp a) where
-  Comp f <> Comp f' = Comp $ f <> f'
-
-{- Example usage:
-λ> f = Comp $ \s -> s <> (Sum 1)
-λ> g = Comp $ \s -> s <> (Sum (-1))
-λ> unComp (f <> g)
-Sum {getSum = 0}
--}
+instance Semigroup (Comp a) where
+  (Comp f) <> (Comp g) = Comp (f . g)
 ```
 
 ### 11.

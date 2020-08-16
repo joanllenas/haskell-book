@@ -222,6 +222,8 @@ Finished in 0.0018 seconds
   - **unary**: one argument. i.e. `Just a`
   - **products**: two or more arguments. i.e. `Time Int Int Int`
 
+- **Algebraic datatypes**: Algebraic datatypes in Haskell are algebraic, because we can describe the patterns of argument structures using two basic operations: sum and product.
+
 - **cardinality**: The number of different combinations of a type. i.e. `Bool` = 2 (`True` and `False`), `Int8` = minBound::Int8 + maxBound::Int8 + 1 = 128 + 127 + 1 = 256.
 
 - **idempotence**: If you apply the function once, it returns a result, and applying the same function to that value won’t ever change it. You might think of a list that you sort: once you sort it, the sorted list will remain the same after applying the same sorting function to it again.
