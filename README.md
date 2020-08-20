@@ -159,6 +159,31 @@ if you don’t specify the concrete type.
   - If no further inputs are possible, then it is still in **WHNF** but also in **NF**.
 
 
+## Types
+
+```hs
+type Name = String -- Type alias
+
+data Maybe a = Just a | Nothing
+     [1]       [2]      [3]
+
+data Bool = True | False
+     [4]    [3]    [3]
+```
+1. Type constructor:
+  - Can only be used in type signatures.
+  - b) _Unary_ Type Constructor (because it has one argument of type `a`)
+2. Data Constructor: 
+  - Can't be used in type signatures.
+  - Construct values that can inhabit types.
+  - _Unary_ Data Constructor (because it has one argument of type `a`)
+3. Data Constructor: 
+  - _Nullary_ Data Constructor. (because it doesn't have arguments)
+  - _Constant Value_. (because it doesn't have arguments)
+4. Type constructor:
+  - Can only be used in type signatures.
+  - _Type Constant_ (because it doesn't have arguments)
+
 ## newtype vs type vs data
 
 - **`newtype` vs `type`**: 
@@ -180,24 +205,24 @@ mkPerson :: Name -> Age -> Maybe Person mkPerson name age -- Smart constructor
 
 ## Create project 
 ```
-λ> stack new my-project
+> stack new my-project
 ```
 
 ## Initialize project 
 ```
-λ> stack init
+> stack init
 ```
 > Generates the `stack.yaml` file.
 
 ## Build project 
 ```
-λ> stack build
+> stack build
 ```
 
 ## Test project 
 > For a cabal file with `name: morse` and a `test-suite tests` section:
 ```
-λ> stack ghci morse:tests
+> stack ghci morse:tests
 λ> main
 My Test Description
   should blah blah blah...
@@ -206,6 +231,19 @@ My Test Description
 Finished in 0.0018 seconds
 1 example, 0 failures
 ```
+
+## Make some package available in repl
+> _(From: https://typeclasses.com/ghci/intro)_
+
+```
+> stack repl --package QuickCheck
+(noise...)
+λ> import Test.QuickCheck
+λ> :t property
+property :: Testable prop => prop -> Property
+```
+
+> `stack repl --package QuickCheck` is only needed once.
 
 # Vocabulary and definitions
 
@@ -240,10 +278,39 @@ Finished in 0.0018 seconds
 
 - **Semigroup**: A semigroup is a binary associative operation.
   
-  In plain English, a **Semigroup** is a function that takes two arguments and follows one law: **associativity**. 
+  - In plain English, a **Semigroup** is a function that takes two arguments and follows one law: **associativity**. 
 
 - **Monoid**: A monoid is a **Semigroup** with an identity.
   
-  In plain English, a **Monoid** is a function that takes two argu ments and follows two laws: **associativity** and **identity**. 
+  - In plain English, a **Monoid** is a function that takes two argu ments and follows two laws: **associativity** and **identity**. 
   
-  **Identity** means there exists some value such that when we pass it as an input to our function, the operation is rendered moot and the other value is returned, such as when we add zero or multiply by one.
+  - **Identity** means there exists some value such that when we pass it as an input to our function, the operation is rendered moot and the other value is returned, such as when we add zero or multiply by one.
+
+  - `Monoid` instances are not unique for a given datatype: 1 type -> n Monoid instances (we use `newtype`s to preserve the unique pairing of a `Monoid` instance to a type).
+
+- **Functor**: Instances of the Functor type class should abide by two basic laws:
+  
+  - **Identity**: `fmap id == id`. If we `fmap` the identity function, it should have the same result as passing our value to identity. We shouldn’t be changing any of the outer structure `f` that we’re mapping over by mapping `id`.
+  
+  - **Composition**: `fmap (f . g) == fmap f . fmap g`. If we compose two functions, `f` and `g`, and `fmap` that over some structure, we should get the same result as if we mapped and then composed them.
+  
+  - **Structure preservation**: Both of these laws touch on the essential rule that functors must be structure preserving.
+
+  - `Functor` instances are unique for a given datatype: 1 type -> 1 Functor instance.
+
+- **_Lifting_ a function**: 
+
+Lift function `(+1)` over some structure `f`:
+
+```hs
+liftedInc :: (Functor f, Num b) => f b -> f b
+liftedInc = fmap (+1)
+```
+
+`Int` has a `Read` instance, and `fmap` lifts `read` over the `IO` type:
+
+```hs
+getInt :: IO Int
+getInt = fmap read getLine
+```
+
