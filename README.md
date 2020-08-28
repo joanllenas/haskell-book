@@ -207,6 +207,7 @@ mkPerson :: Name -> Age -> Maybe Person mkPerson name age -- Smart constructor
 ```
 > stack new my-project
 ```
+> You can use the `simple` flag.
 
 ## Initialize project 
 ```
@@ -314,3 +315,12 @@ getInt :: IO Int
 getInt = fmap read getLine
 ```
 
+- **Applicative**: An Applicative is a Monoiddal Functor. It lifts a function over a structure.
+  
+  Instances of the `Applicative` type class should abide by four laws:
+
+  - **Identity**: `pure id <*> v = v`.
+  - **Composition**: `pure (.) <*> u <*> v <*> w = u <*> (v <*> w)`.
+  - **Homomorphism**: `pure f <*> pure x = pure (f x)`. The general idea of the homomorphism law is that applying the function doesn’t change the structure around the values.
+  - **Interchange**: `u <*> pure y = pure ($ y) <*> u`.
+    - Example: `(Just (+2) <*> pure 2) == (pure ($ 2) <*> Just (+2))`
