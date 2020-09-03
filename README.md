@@ -316,7 +316,7 @@ getInt = fmap read getLine
 ```
 
 - **Applicative**: An Applicative is a Monoiddal Functor. It lifts a function over a structure.
-  
+
   Instances of the `Applicative` type class should abide by four laws:
 
   - **Identity**: `pure id <*> v = v`.
@@ -324,3 +324,20 @@ getInt = fmap read getLine
   - **Homomorphism**: `pure f <*> pure x = pure (f x)`. The general idea of the homomorphism law is that applying the function doesn’t change the structure around the values.
   - **Interchange**: `u <*> pure y = pure ($ y) <*> u`.
     - Example: `(Just (+2) <*> pure 2) == (pure ($ 2) <*> Just (+2))`
+
+- **Monad**: A `Monad` is not a burrito.
+
+  Instances of the `Monad` type class should abide by three laws:
+
+  - **Identity laws**: Basically, both of these laws are saying that return should be neutral and not perform any computation.
+    - **Right identity**: `m >>= return = m`.
+    - **Left identity**: `return x >>= f = f x`.
+  - **Associativity**: Regrouping the functions should not have any impact on the final result: `(m >>= f) >>= g = m >>= (\x -> f x >>= g)`.
+
+- **Kleisli composition**: Is function composition for monadic structures. Similar to what the `(.)` operator does for normal functions:
+  - `(>=>) :: Monad m => (a -> m b) -> (b -> m c) -> a -> m c`
+  - Example: 
+```
+λ> (\x -> Just $ x*2) >=> (\x -> Just $ x+1) $ 3
+Just 7
+```

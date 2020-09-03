@@ -2,17 +2,15 @@ module Main where
 
 import Data.Monoid
 import Test.Hspec
-import Test.QuickCheck hiding (Success, Failure)
-import Test.QuickCheck.Checkers 
+import Test.QuickCheck hiding (Failure, Success)
+import Test.QuickCheck.Checkers
 import Test.QuickCheck.Classes
-
-
 
 -- ## List Applicative exercise (pg.719)
 
-data List a 
+data List a
   = Nil
-  | Cons a (List a) 
+  | Cons a (List a)
   deriving (Eq, Show)
 
 instance Functor List where
@@ -23,52 +21,54 @@ append :: List a -> List a -> List a
 append Nil ys = ys
 append (Cons x xs) ys = Cons x $ xs `append` ys
 
-instance Applicative List where 
+instance Applicative List where
   pure x = Cons x Nil
   Nil <*> _ = Nil
   _ <*> Nil = Nil
   (Cons f fs) <*> as = fmap f as `append` (fs <*> as)
 
-instance Arbitrary a => Arbitrary (List a)  where
+instance Arbitrary a => Arbitrary (List a) where
   arbitrary = sized go
-    where go 0 = pure Nil
-          go n = do
-            xs <- go (n - 1)
-            x  <- arbitrary
-            return (Cons x xs)
+    where
+      go 0 = pure Nil
+      go n = do
+        xs <- go (n - 1)
+        x <- arbitrary
+        return (Cons x xs)
 
-instance (Eq a) => EqProp (List a) where 
+instance (Eq a) => EqProp (List a) where
   (=-=) = eq
-
 
 mainList :: IO ()
 mainList =
   hspec $ do
     describe "List" $ do
       it "Applicative" $
-          (quickBatch $ applicative (undefined :: List (Int, Float, String)))
-
-
+        (quickBatch $ applicative (undefined :: List (Int, Float, String)))
 
 -- ## ZipList Applicative exercise (pg.721)
 
-newtype ZipList' a 
-  = ZipList' [a] 
+newtype ZipList' a
+  = ZipList' [a]
   deriving (Eq, Show)
 
 instance Eq a => EqProp (ZipList' a) where
   xs =-= ys = xs' `eq` ys'
-    where xs' = let (ZipList' l) = xs
-                in take 3000 l
-          ys' = let (ZipList' l) = ys 
-                in take 3000 l
+    where
+      xs' =
+        let (ZipList' l) = xs
+         in take 3000 l
+      ys' =
+        let (ZipList' l) = ys
+         in take 3000 l
 
-instance Functor ZipList' where 
+instance Functor ZipList' where
   fmap f (ZipList' xs) = ZipList' $ fmap f xs
 
-instance Applicative ZipList' where 
+instance Applicative ZipList' where
   pure x = ZipList' $ repeat x
   ZipList' fs <*> ZipList' xs = ZipList' $ zipWith (\f x -> f x) fs xs
+
 -- Uli: ZipList' fs <*> ZipList' ys = ZipList' (zipWith ($) fs ys)
 
 instance (Arbitrary a) => Arbitrary (ZipList' a) where
@@ -81,15 +81,13 @@ mainZipList =
   hspec $ do
     describe "ZipList" $ do
       it "Applicative" $
-          (quickBatch $ applicative (undefined :: ZipList' (Int, Float, String)))
-
-
+        (quickBatch $ applicative (undefined :: ZipList' (Int, Float, String)))
 
 -- ## Exercise: Variations on Either (pg.725)
 
-data Validation e a 
+data Validation e a
   = Failure e
-  | Success a 
+  | Success a
   deriving (Eq, Show)
 
 instance Functor (Validation e) where
@@ -107,12 +105,12 @@ instance (Eq a, Eq e) => EqProp (Validation e a) where
   (=-=) = eq
 
 instance (Arbitrary e, Arbitrary a) => Arbitrary (Validation e a) where
-  arbitrary = do 
+  arbitrary = do
     e <- arbitrary
     a <- arbitrary
-    frequency 
-      [ (1, return $ Success a) 
-      , (2, return $ Failure e) 
+    frequency
+      [ (1, return $ Success a),
+        (2, return $ Failure e)
       ]
 
 mainValidation :: IO ()
@@ -120,15 +118,13 @@ mainValidation =
   hspec $ do
     describe "Validation" $ do
       it "Applicative" $
-          (quickBatch $ applicative (undefined :: Validation String (Int, Float, String)))
-
-
+        (quickBatch $ applicative (undefined :: Validation String (Int, Float, String)))
 
 -- ## Write instances for the following datatypes. (pg.726)
 
 -- 1.
-data Pair a 
-  = Pair a a 
+data Pair a
+  = Pair a a
   deriving (Eq, Show)
 
 instance Functor Pair where
@@ -144,7 +140,7 @@ instance (Arbitrary a) => Arbitrary (Pair a) where
     y <- arbitrary
     return $ Pair x y
 
-instance (Eq a) => EqProp (Pair a) where 
+instance (Eq a) => EqProp (Pair a) where
   (=-=) = eq
 
 mainPair :: IO ()
@@ -152,10 +148,10 @@ mainPair =
   hspec $ do
     describe "Pair" $ do
       it "Applicative" $
-          (quickBatch $ applicative (undefined :: Pair (Int, Float, String)))
+        (quickBatch $ applicative (undefined :: Pair (Int, Float, String)))
 
 -- 2.
-data Two a b 
+data Two a b
   = Two a b
   deriving (Eq, Show)
 
@@ -172,7 +168,7 @@ instance (Arbitrary a, Arbitrary b) => Arbitrary (Two a b) where
     y <- arbitrary
     return $ Two x y
 
-instance (Eq a, Eq b) => EqProp (Two a b) where 
+instance (Eq a, Eq b) => EqProp (Two a b) where
   (=-=) = eq
 
 mainTwo :: IO ()
@@ -180,11 +176,10 @@ mainTwo =
   hspec $ do
     describe "Two" $ do
       it "Applicative" $
-          (quickBatch $ applicative (undefined :: Two String (Int, Float, String)))
-
+        (quickBatch $ applicative (undefined :: Two String (Int, Float, String)))
 
 -- 3.
-data Three a b c 
+data Three a b c
   = Three a b c
   deriving (Show, Eq)
 
@@ -202,7 +197,7 @@ instance (Arbitrary a, Arbitrary b, Arbitrary c) => Arbitrary (Three a b c) wher
     z <- arbitrary
     return $ Three x y z
 
-instance (Eq a, Eq b, Eq c) => EqProp (Three a b c) where 
+instance (Eq a, Eq b, Eq c) => EqProp (Three a b c) where
   (=-=) = eq
 
 mainThree :: IO ()
@@ -210,10 +205,10 @@ mainThree =
   hspec $ do
     describe "Three" $ do
       it "Applicative" $
-          (quickBatch $ applicative (undefined :: Three String String (Int, Float, String)))
+        (quickBatch $ applicative (undefined :: Three String String (Int, Float, String)))
 
 -- 4.
-data Three' a b 
+data Three' a b
   = Three' a b b
   deriving (Show, Eq)
 
@@ -231,7 +226,7 @@ instance (Arbitrary a, Arbitrary b) => Arbitrary (Three' a b) where
     z <- arbitrary
     return $ Three' x y z
 
-instance (Eq a, Eq b) => EqProp (Three' a b) where 
+instance (Eq a, Eq b) => EqProp (Three' a b) where
   (=-=) = eq
 
 mainThree' :: IO ()
@@ -239,10 +234,10 @@ mainThree' =
   hspec $ do
     describe "Three'" $ do
       it "Applicative" $
-          (quickBatch $ applicative (undefined :: Three' String (Int, Float, String)))
+        (quickBatch $ applicative (undefined :: Three' String (Int, Float, String)))
 
 -- 5.
-data Four a b c d 
+data Four a b c d
   = Four a b c d
   deriving (Eq, Show)
 
@@ -261,7 +256,7 @@ instance (Arbitrary a, Arbitrary b, Arbitrary c, Arbitrary d) => Arbitrary (Four
     d <- arbitrary
     return $ Four a b c d
 
-instance (Eq a, Eq b, Eq c, Eq d) => EqProp (Four a b c d) where 
+instance (Eq a, Eq b, Eq c, Eq d) => EqProp (Four a b c d) where
   (=-=) = eq
 
 mainFour :: IO ()
@@ -269,10 +264,10 @@ mainFour =
   hspec $ do
     describe "Four" $ do
       it "Applicative" $
-          (quickBatch $ applicative (undefined :: Four String String String (Int, Float, String)))
+        (quickBatch $ applicative (undefined :: Four String String String (Int, Float, String)))
 
 -- 6.
-data Four' a b 
+data Four' a b
   = Four' a a a b
   deriving (Eq, Show)
 
@@ -291,7 +286,7 @@ instance (Arbitrary a, Arbitrary b) => Arbitrary (Four' a b) where
     d <- arbitrary
     return $ Four' a b c d
 
-instance (Eq a, Eq b) => EqProp (Four' a b) where 
+instance (Eq a, Eq b) => EqProp (Four' a b) where
   (=-=) = eq
 
 mainFour' :: IO ()
@@ -299,14 +294,11 @@ mainFour' =
   hspec $ do
     describe "Four'" $ do
       it "Applicative" $
-          (quickBatch $ applicative (undefined :: Four' String (Int, Float, String)))
-
-
-
+        (quickBatch $ applicative (undefined :: Four' String (Int, Float, String)))
 
 -- MAINS
 
-main :: IO()
+main :: IO ()
 main = do
   mainList
   mainZipList
