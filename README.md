@@ -289,7 +289,9 @@ property :: Testable prop => prop -> Property
 
   - `Monoid` instances are not unique for a given datatype: 1 type -> n Monoid instances (we use `newtype`s to preserve the unique pairing of a `Monoid` instance to a type).
 
-- **Functor**: Instances of the Functor type class should abide by two basic laws:
+- **Functor**: `Functor` gives us a way to transform values embedded in a structure.
+
+  Instances of the `Functor` type class should abide by two basic laws:
   
   - **Identity**: `fmap id == id`. If we `fmap` the identity function, it should have the same result as passing our value to identity. We shouldn’t be changing any of the outer structure `f` that we’re mapping over by mapping `id`.
   
@@ -317,6 +319,8 @@ getInt = fmap read getLine
 
 - **Applicative**: An Applicative is a Monoiddal Functor. It lifts a function over a structure.
 
+  Applicative gives us a way to transform values contained within a structure using a function that is also embedded in a structure
+
   Instances of the `Applicative` type class should abide by four laws:
 
   - **Identity**: `pure id <*> v = v`.
@@ -341,3 +345,10 @@ getInt = fmap read getLine
 λ> (\x -> Just $ x*2) >=> (\x -> Just $ x+1) $ 3
 Just 7
 ```
+
+
+- **Foldable**: Foldable data structures are a class of data structures that can be folded to a summary value. The folding function is always dependent on some `Monoid` instance.
+
+- **Traversable**: `Traversable` allows you to transform elements inside a structure like a `Functor`, producing applicative effects along the way, and lift those potentially multiple instances of `Applicative` structure outside of the `Traversable` structure. 
+
+  It is commonly described as a way to traverse a data structure, mapping a function inside a structure while accumulating applicative contexts in the process.
