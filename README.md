@@ -303,6 +303,8 @@ property :: Testable prop => prop -> Property
 
 - **_Lifting_ a function**: 
 
+  - A good [explanation](https://stackoverflow.com/a/2395956/779529).
+
 Lift function `(+1)` over some structure `f`:
 
 ```hs
